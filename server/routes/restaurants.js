@@ -1,5 +1,5 @@
 const express = require("express");
-const { handleAddRestaurant, handleGetRestaurants, handleUpdateRestaurant, handleDeleteRestaurant } = require("../controller/resrestaurant-controller/restaurants");
+const { handleAddRestaurant, handleGetRestaurants, handleUpdateRestaurant, handleDeleteRestaurant, handleGetRestaurant } = require("../controller/resrestaurant-controller/restaurants");
 const router = express.Router();
 
 router.route("/")
@@ -7,5 +7,7 @@ router.route("/")
     .get(handleGetRestaurants)
     .put(handleUpdateRestaurant)
     .delete(handleDeleteRestaurant);
+
+router.route("/:restoId").get(handleGetRestaurant);
 
 module.exports = router

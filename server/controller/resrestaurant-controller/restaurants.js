@@ -11,6 +11,20 @@ const handleAddRestaurant = expressAsyncHanlder(async (req, res, next) => {
     })
 })
 
+const handleGetRestaurant = expressAsyncHanlder(async (req, res, next) => {
+    const restoId = req.params.restoId;
+    Restaurant.findByPk(restoId).then((result) => {
+        const data = {
+            name: result.name,
+            contact: result.contact,
+            address: result.address,
+        }
+        res.status(httpStatus.SUCCESS).json({ status: "success", restaurant: data})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 const handleGetRestaurants = expressAsyncHanlder(async (req, res, next) => {
     Restaurant.findAll().then((restaurants) =>{
         res.status(httpStatus.OK).json({restaurantCount: restaurants.length, restaurants});
@@ -43,4 +57,5 @@ module.exports = {
     handleGetRestaurants,
     handleUpdateRestaurant,
     handleDeleteRestaurant,
+    handleGetRestaurant,
 }

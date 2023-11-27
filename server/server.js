@@ -1,6 +1,7 @@
 const express = require('express');
-const morgan = require('morgan');
 const http = require('http');
+const morgan = require('morgan');
+const cors = require("cors")
 const { ConfigKeys } = require('./utils/configs/configKeys');
 const cookieParser = require('cookie-parser');
 const {connectToDB} = require('./database/connection');
@@ -15,6 +16,9 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 app.use(helmet());
 
 // Setting up routes for APIs
