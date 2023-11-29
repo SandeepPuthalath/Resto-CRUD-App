@@ -4,9 +4,11 @@ const morgan = require('morgan');
 const cors = require("cors")
 const { ConfigKeys } = require('./utils/configs/configKeys');
 const cookieParser = require('cookie-parser');
-const {connectToDB} = require('./database/connection');
+const { connectToDB } = require('./database/connection');
 const helmet = require('helmet');
 const route = require('./routes/index');
+const errorHandler = require('./utils/error/errorHanler');
+const AppError = require("./utils/error/AppError")
 
 // Create express instance
 const app = express();
@@ -23,6 +25,16 @@ app.use(helmet());
 
 // Setting up routes for APIs
 app.use('/api/v1', route);
+
+
+app.all("*", (req, res, next) => {
+    const err = new AppError(`Can't find ${req.originalUrl} on the server`, httpStatus.NOT_FOUND);
+    next(err)
+})
+
+// Global error handler
+app.use(errorHandler)
+
 
 // Connecting to Database.
 connectToDB()

@@ -1,5 +1,6 @@
 import React from "react";
 import { instance } from "../../api/api";
+import Loading from "../loading/Loading";
 
 const AddRestoForm = () => {
   const [formData, setFormData] = React.useState({
@@ -9,13 +10,14 @@ const AddRestoForm = () => {
   });
   const [status, setStatus] = React.useState(false);
   const [message, setMessage] = React.useState("")
+  const [loading, setLoading] = React.useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     instance
       .post("/restaurant", formData)
       .then((res) => {
-        console.log(res);
         setFormData({
           name: "",
           address: "",
@@ -23,9 +25,11 @@ const AddRestoForm = () => {
         });
         setMessage(res.data?.message)
         setStatus(true);
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err);
+        setMessage(err.message);
       });
   };
 
@@ -34,11 +38,13 @@ const AddRestoForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  if(loading) return <Loading/>
+
   return (
     <>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         {status && (
-          <div className="flex flex-wrap -mx-3 mb-6 bg-green-50">
+          <div className="flex justify-center items-center p-2 rounded  flex-wrap -mx-3 mb-6 bg-green-50">
             <h3 className="text-xl text-green-600">{message}</h3>
           </div>
         )}

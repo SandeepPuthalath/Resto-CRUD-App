@@ -43,7 +43,7 @@ const Main = () => {
           Add restaurant
         </button>
       </div>
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
         {restaruants?.map((restaruant) => (
           <RestoCards
             key={restaruant?.id}

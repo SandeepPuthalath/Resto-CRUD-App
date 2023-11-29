@@ -14,14 +14,13 @@ const UpdateRestoForm = ({ id }) => {
 
   React.useEffect(() => {
     handleGettingRestoDetails();
-  }, [loading]);
+  }, []);
 
   const handleGettingRestoDetails = async () => {
     setLoading(true);
     instance
       .get(`/restaurant/${id}`)
       .then((result) => {
-        console.log(result.data.restaurant?.name);
         setFormData((s) => {
           s.name = result.data.restaurant?.name;
           s.contact = result.data.restaurant?.contact;
@@ -29,7 +28,6 @@ const UpdateRestoForm = ({ id }) => {
           return s;
         });
         setLoading(false);
-        console.log(formData);
       })
       .catch((err) => {
         console.log(err);
@@ -42,16 +40,11 @@ const UpdateRestoForm = ({ id }) => {
     instance
       .put(`/restaurant/?restoId=${id}`, formData)
       .then((res) => {
-        setFormData({
-          name: "",
-          address: "",
-          contact: "",
-        });
         setMessage(res.data?.message);
         setStatus(true);
       })
       .catch((err) => {
-        console.log(err);
+        setMessage(err.message);
       });
   };
 
@@ -66,7 +59,7 @@ const UpdateRestoForm = ({ id }) => {
     <>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         {status && (
-          <div className="flex flex-wrap -mx-3 mb-6 bg-green-50">
+          <div className="flex justify-center items-center p-2 rounded flex-wrap -mx-3 mb-6 bg-green-50">
             <h3 className="text-xl text-green-600">{message}</h3>
           </div>
         )}
